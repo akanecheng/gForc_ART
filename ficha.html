@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GFORCART - Ficha do Personagem</title>
+  <link rel="stylesheet" href="ficha.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Plus+Jakarta+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="nav-container">
+      <a href="personagens.html" class="logo">
+        <div class="logo-icon"><i class="fa-solid fa-paint-brush"></i></div>
+        <span>GFORCART</span>
+      </a>
+      
+      <button class="menu-toggle" id="menuToggle" aria-label="Abrir Menu">
+        <i class="fa-solid fa-bars"></i>
+      </button>
+
+      <ul class="nav-links" id="navLinks">
+        <li><a href="#"><i class="fa-solid fa-house"></i> Início</a></li>
+        <li><a href="personagens.html" class="active"><i class="fa-solid fa-users"></i> Personagens</a></li>
+        <li><a href="#"><i class="fa-solid fa-image"></i> Desenhos</a></li>
+        <li><a href="configuracoes-personagens.html" class="btn-panel"><i class="fa-solid fa-gear"></i> Painel / Configurações</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- Conteúdo da Ficha -->
+  <main class="container">
+    <a href="personagens.html" class="btn-back"><i class="fa-solid fa-arrow-left"></i> Voltar à Galeria</a>
+
+    <div id="characterContent" class="profile-container">
+      <div class="loading-state">
+        <i class="fa-solid fa-spinner fa-spin"></i>
+        <p>Carregando dados da ficha...</p>
+      </div>
+    </div>
+  </main>
+
+  <script type="module" src="ficha.js"></script>
+</body>
+</html>

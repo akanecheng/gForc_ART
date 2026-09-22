@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>gForc_ART - Galeria de Personagens</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="personagens.css">
+</head>
+<body>
+
+  <!-- Navbar -->
+  <header class="navbar">
+    <div class="logo">
+      <span class="logo-icon"><i class="fa-solid fa-paint-brush"></i></span>
+      <span class="logo-text">gForce_ART</span>
+    </div>
+
+    <button class="menu-toggle" id="menuToggle" aria-label="Abrir Menu">
+      <i class="fa-solid fa-bars"></i>
+    </button>
+
+    <!-- Menu Drawer Dropdown -->
+    <nav class="nav-drawer" id="navDrawer">
+      <ul>
+        <li>
+          <a href="index.html">
+            <i class="fa-solid fa-house"></i> Início
+          </a>
+        </li>
+        <li>
+          <a href="personagens.html" class="active">
+            <i class="fa-solid fa-users"></i> Personagens
+          </a>
+        </li>
+        <li>
+          <a href="artes.html">
+            <i class="fa-solid fa-image"></i> Desenhos
+          </a>
+        </li>
+        <li>
+          <a href="configuracoes-personagens.html" class="btn-panel">
+            <i class="fa-solid fa-gear"></i> Configurações
+          </a>
+        </li>
+      </ul>
+    </nav>
+  </header>
+
+  <!-- Hero & Busca -->
+  <main class="container">
+    <header class="header-section">
+      <h1>PERSONAGENS</h1>
+      <p class="subtitle">Conheça meus personagens principais e secundários</p>
+      
+      <div class="search-box">
+        <i class="fa-solid fa-magnifying-glass search-icon"></i>
+        <input type="text" id="searchInput" placeholder="Buscar por nome ou função...">
+      </div>
+    </header>
+
+    <!-- Grid de Personagens -->
+    <section class="cards-grid" id="cardsGrid">
+      <div class="loading-state">
+        <i class="fa-solid fa-spinner fa-spin"></i>
+        <p>Carregando universo...</p>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const menuToggle = document.getElementById('menuToggle');
+    const navDrawer = document.getElementById('navDrawer');
+
+    if (menuToggle && navDrawer) {
+      menuToggle.addEventListener('click', (e) => {
+        e.stopPropagation();
+        navDrawer.classList.toggle('open');
+      });
+
+      document.addEventListener('click', (e) => {
+        if (!navDrawer.contains(e.target) && !menuToggle.contains(e.target)) {
+          navDrawer.classList.remove('open');
+        }
+      });
+    }
+  </script>
+
+  <!-- Script com Firebase -->
+  <script type="module" src="personagens.js"></script>
+</body>
+</html>

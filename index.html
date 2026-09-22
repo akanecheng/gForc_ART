@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>gForc_Art</title>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- Header / Navbar -->
+    <header class="navbar">
+        <div class="logo">
+            <span class="logo-icon"><i class="fa-solid fa-paint-brush"></i></span>
+            <span class="logo-text">gForce_ART</span>
+        </div>
+        <button class="menu-toggle" id="menuToggle" aria-label="Abrir Menu">
+            <i class="fa-solid fa-bars"></i>
+        </button>
+
+        <!-- Menu Drawer Dropdown -->
+        <nav class="nav-drawer" id="navDrawer">
+            <ul>
+                <li>
+                    <a href="index.html" class="active">
+                        <i class="fa-solid fa-house"></i> Início
+                    </a>
+                </li>
+                <li>
+                    <a href="personagens.html">
+                        <i class="fa-solid fa-users"></i> Personagens
+                    </a>
+                </li>
+                <li>
+                    <a href="artes.html">
+                        <i class="fa-solid fa-image"></i> Desenhos
+                    </a>
+                </li>
+                <li>
+                    <a href="configuracoes-personagens.html" class="btn-panel">
+                        <i class="fa-solid fa-gear"></i>Configurações
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="container">
+        <!-- Hero Card -->
+        <section class="profile-card">
+            <div class="avatar-container">
+                <img id="artist-avatar" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=500&auto=format&fit=crop" alt="Foto da Artista">
+                <span class="badge" id="artist-badge">
+                    <i class="fa-solid fa-palette"></i> <span id="badge-text">Artista</span>
+                </span>
+            </div>
+
+            <div class="sub-badge" id="artist-subtitle">BEM-VINDO AO MEU UNIVERSO ARTÍSTICO</div>
+
+            <h1 class="main-title" id="artist-title">gForc_ART</h1>
+
+            <p class="description" id="artist-description">
+                Ilustradora e criadora de universos conceituais. Aqui você encontrará os perfis completos dos meus personagens, suas histórias, fichas de afinidade e uma galeria com todas as minhas artes digitais e tradicionais.
+            </p>
+
+            <div class="social-links">
+                <a href="#" id="link-instagram" target="_blank" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+                <a href="#" id="link-secondary" target="_blank" aria-label="Dashes"><i class="fa-solid fa-circle-notch"></i></a>
+                <a href="#" id="link-artstation" target="_blank" aria-label="ArtStation"><i class="fa-brands fa-artstation"></i></a>
+            </div>
+        </section>
+
+        <!-- Seções com Links solicitados -->
+        <section class="navigation-sections">
+            <a href="personagens.html" class="nav-card">
+                <div class="nav-card-info">
+                    <div class="nav-card-title">
+                        <i class="fa-solid fa-users icon"></i>
+                        <h2>PERSONAGENS EM DESTAQUE</h2>
+                    </div>
+                    <p>Conheça os protagonistas e figuras do meu universo</p>
+                </div>
+                <div class="nav-card-action">
+                    <span>Ver Todos</span>
+                    <i class="fa-solid fa-arrow-right"></i>
+                </div>
+            </a>
+
+            <a href="artes.html" class="nav-card">
+                <div class="nav-card-info">
+                    <div class="nav-card-title">
+                        <i class="fa-solid fa-wand-magic-sparkles icon"></i>
+                        <h2>ILUSTRAÇÕES RECENTES</h2>
+                    </div>
+                    <p>Últimos desenhos e conceitos publicados</p>
+                </div>
+                <div class="nav-card-action">
+                    <span>Ir para Galeria</span>
+                    <i class="fa-solid fa-arrow-right"></i>
+                </div>
+            </a>
+        </section>
+    </main>
+
+<footer class="footer">
+    <p>© 2026 gForc_ART. Todos os direitos reservados.</p>
+</footer>
+
+    <!-- Script com Firebase Firestore -->
+    <script type="module" src="script.js"></script>
+</body>
+</html>

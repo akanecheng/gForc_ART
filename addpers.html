@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>gForc_ART - Gerenciamento de Personagens</title>
+  <link rel="stylesheet" href="addpers.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Plus+Jakarta+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="nav-container">
+      <a href="personagens.html" class="logo">
+        <div class="logo-icon"><i class="fa-solid fa-paint-brush"></i></div>
+        <span>gForc_ART</span>
+      </a>
+      
+      <button class="menu-toggle" id="menuToggle" aria-label="Abrir Menu">
+        <i class="fa-solid fa-bars"></i>
+      </button>
+
+      <ul class="nav-links" id="navLinks">
+        <li><a href="#"><i class="fa-solid fa-house"></i> Início</a></li>
+        <li><a href="personagens.html"><i class="fa-solid fa-users"></i> Personagens</a></li>
+        <li><a href="#"><i class="fa-solid fa-image"></i> Desenhos</a></li>
+        <li><a href="configuracoes-personagens.html" class="btn-panel active"><i class="fa-solid fa-gear"></i> Painel / Configurações</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <main class="container">
+    <header class="header-section">
+      <h1>GERENCIAR PERSONAGENS</h1>
+      <p class="subtitle">Adicione, edite ou remova fichas do seu universo.</p>
+    </header>
+
+    <div class="admin-grid">
+      <!-- Formulário de Criação/Edição -->
+      <section class="form-container">
+        <h2 id="formTitle">Novo Personagem</h2>
+        <form id="characterForm">
+          <input type="hidden" id="charId">
+
+          <div class="form-group">
+            <label for="nome">Nome *</label>
+            <input type="text" id="nome" required placeholder="Ex: Astraea Moonfall">
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="idade">Idade</label>
+              <input type="text" id="idade" placeholder="Ex: 24 anos">
+            </div>
+
+            <div class="form-group">
+              <label for="corCard">Cor do Card</label>
+              <input type="color" id="corCard" value="#5a122a">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="foto">Foto de Perfil</label>
+            <input type="file" id="foto" accept="image/*">
+            <span class="file-hint">A imagem será salva no Firebase Storage.</span>
+          </div>
+
+          <div class="form-group">
+            <label for="resumo">Resumo (Exibido no Card) *</label>
+            <textarea id="resumo" rows="2" required placeholder="Breve introdução..."></textarea>
+          </div>
+
+          <div class="form-group">
+            <label for="personalidade">Personalidade</label>
+            <textarea id="personalidade" rows="3"></textarea>
+          </div>
+
+          <div class="form-group">
+            <label for="aparencia">Aparência</label>
+            <textarea id="aparencia" rows="3"></textarea>
+          </div>
+
+          <div class="form-group">
+            <label for="historia">História</label>
+            <textarea id="historia" rows="4"></textarea>
+          </div>
+
+          <div class="form-group">
+            <label for="relacoes">Relações</label>
+            <textarea id="relacoes" rows="3"></textarea>
+          </div>
+
+          <div class="form-group">
+            <label for="habilidades">Habilidades</label>
+            <textarea id="habilidades" rows="3"></textarea>
+          </div>
+
+          <div class="form-group">
+            <label for="curiosidades">Curiosidades</label>
+            <textarea id="curiosidades" rows="3"></textarea>
+          </div>
+
+          <div class="form-actions">
+            <button type="submit" id="btnSave" class="btn-primary">
+              <i class="fa-solid fa-floppy-disk"></i> Salvar Personagem
+            </button>
+            <button type="button" id="btnCancel" class="btn-secondary" style="display: none;">
+              Cancelar Edição
+            </button>
+          </div>
+        </form>
+      </section>
+
+      <!-- Lista de Controle / Tabela -->
+      <section class="list-container">
+        <div class="list-header">
+          <h2>Personagens Cadastrados</h2>
+          <button id="btnDeleteSelected" class="btn-danger" disabled>
+            <i class="fa-solid fa-trash"></i> Excluir Selecionados
+          </button>
+        </div>
+
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th width="40"><input type="checkbox" id="selectAll"></th>
+                <th width="60">Foto</th>
+                <th>Nome</th>
+                <th width="100">Ações</th>
+              </tr>
+            </thead>
+            <tbody id="characterTableBody">
+              <tr>
+                <td colspan="4" class="loading-cell">Carregando lista...</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <script type="module" src="addpers.js"></script>
+</body>
+</html>

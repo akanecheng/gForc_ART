@@ -1,0 +1,246 @@
+/* Reset Básico */
+
+:root {
+    --c-1: #4B0F1E;
+    --c-2: #6D1D32;
+    --c-3: #8E2B44;
+    --c-4: #B23C59;
+    --c-5: #CC5671;
+    --c-6: #E07A94;
+    --c-7: #F7D6DC;
+
+    --card-bg: var(--c-2);
+    --card-border: rgba(247, 214, 220, 0.15);
+
+    --font-heading: 'Cinzel', serif;
+}
+
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: var(--c-1);
+    color: var(--c-7);
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    min-height: 100vh;
+}
+
+/* Header & Navbar */
+.navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: var(--c-1);
+    border-bottom: 1px solid rgba(247,214,220,.1);
+
+    z-index: 1000;
+    
+}
+
+.navbar-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 20px;
+}
+
+.logo-container {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.logo-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+   background-color: var(--c-3);
+    border: 1px solid var(--c-5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #ffffff;
+}
+
+.brand-name {
+    font-family: 'Cinzel', serif;
+    font-size: 1.25rem;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    color: var(--c-7);
+}
+
+.menu-btn {
+    background-color: var(--c-3);
+    border: 1px solid rgba(247,214,220,0.2);
+    color: var(--c-7);
+    width: 42px;
+    height: 42px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.menu-btn:hover {
+    background-color: #6e1e34;
+}
+
+/* Accordion Menu Dropdown (Abre para baixo) */
+.dropdown-menu {
+    position: fixed;
+    top: 75px;
+    left: 0;
+
+    width: 100%;
+
+    background-color: var(--c-1);
+
+    display: none;
+
+    z-index: 999;
+
+    box-shadow: 0 12px 24px rgba(0,0,0,0.5);
+}
+
+.dropdown-menu.open {
+    display: block;
+}
+
+.nav-links {
+    list-style: none;
+    padding: 12px 20px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.nav-links a {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    padding: 10px 12px;
+
+    color: var(--c-6);
+
+    text-decoration: none;
+
+    font-size: 15px;
+    font-weight: 500;
+
+    line-height: 1;
+}
+
+.nav-links a:hover {
+    color: var(--c-7);
+}
+
+.nav-icon {
+    width: 18px !important;
+    height: 18px !important;
+    min-width: 18px;
+    min-height: 18px;
+    flex-shrink: 0;
+}
+
+.nav-links a.nav-box {
+    margin-top: 4px;
+
+    background-color: rgba(142,43,68,.35);
+
+    border: 1px solid var(--c-3);
+
+    color: var(--c-7);
+
+    width: fit-content;
+}
+
+.nav-links a.nav-box:hover {
+    background-color: var(--c-3);
+}
+
+/* Conteúdo Principal */
+.content {
+    max-width: 480px;
+    margin: 100px auto 0;
+    padding: 20px 16px;
+}
+
+.page-title {
+    font-family: 'Cinzel', serif;
+    font-size: 1.85rem;
+    font-weight: 800;
+    letter-spacing: 0.5px;
+    color: var(--c-7);
+    font-family: var(--font-heading);
+    line-height: 1.2;
+    margin-bottom: 12px;
+    text-transform: uppercase;
+}
+
+.page-description {
+    font-size: 0.95rem;
+    color: #c08594;
+    line-height: 1.5;
+    margin-bottom: 24px;
+}
+
+.divider {
+    border: none;
+    height: 1px;
+    background-color: rgba(255, 255, 255, 0.1);
+    margin-bottom: 24px;
+}
+
+/* Grid para inserção dos Cards via JS */
+.cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 16px;
+}
+
+.card {
+    background-color: var(--card-bg);
+    border: 1px solid var(--card-border);
+
+    border-radius: 18px;
+
+    box-shadow: 0 8px 24px rgba(0,0,0,.25);
+    overflow: hidden;
+    transition: transform 0.2s;
+}
+
+.card:hover {
+    transform: translateY(-4px);
+}
+
+.card img {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+    display: block;
+}
+
+.card-info {
+    padding: 12px;
+}
+
+.card-title {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--c-7);
+}
+
+
+.card-subtitle {
+    font-size: 0.8rem;
+    color: var(--c-6);
+}
