@@ -1,148 +1,559 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>gForc_ART - Gerenciamento de Personagens</title>
-  <link rel="stylesheet" href="addpers.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Plus+Jakarta+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Gerenciar Personagens - gForce_ART</title>
+
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    >
+
+    <link rel="stylesheet" href="addpers.css">
 </head>
+
 <body>
 
-  <!-- Navbar -->
-  <nav class="navbar">
-    <div class="nav-container">
-      <a href="personagens.html" class="logo">
-        <div class="logo-icon"><i class="fa-solid fa-paint-brush"></i></div>
-        <span>gForc_ART</span>
-      </a>
-      
-      <button class="menu-toggle" id="menuToggle" aria-label="Abrir Menu">
+<header class="navbar">
+
+    <div class="logo">
+        <i class="fa-solid fa-paint-brush"></i>
+        <span>gForce_ART</span>
+    </div>
+
+    <button class="menu-toggle" id="menuToggle">
         <i class="fa-solid fa-bars"></i>
-      </button>
+    </button>
 
-      <ul class="nav-links" id="navLinks">
-        <li><a href="#"><i class="fa-solid fa-house"></i> Início</a></li>
-        <li><a href="personagens.html"><i class="fa-solid fa-users"></i> Personagens</a></li>
-        <li><a href="#"><i class="fa-solid fa-image"></i> Desenhos</a></li>
-        <li><a href="configuracoes-personagens.html" class="btn-panel active"><i class="fa-solid fa-gear"></i> Painel / Configurações</a></li>
-      </ul>
-    </div>
-  </nav>
+    <nav class="nav-drawer" id="navDrawer">
+        <ul>
+            <li>
+                <a href="index.html">
+                    <i class="fa-solid fa-house"></i>
+                    Início
+                </a>
+            </li>
 
-  <main class="container">
-    <header class="header-section">
-      <h1>GERENCIAR PERSONAGENS</h1>
-      <p class="subtitle">Adicione, edite ou remova fichas do seu universo.</p>
-    </header>
+            <li>
+                <a href="personagens.html">
+                    <i class="fa-solid fa-users"></i>
+                    Personagens
+                </a>
+            </li>
 
-    <div class="admin-grid">
-      <!-- Formulário de Criação/Edição -->
-      <section class="form-container">
-        <h2 id="formTitle">Novo Personagem</h2>
-        <form id="characterForm">
-          <input type="hidden" id="charId">
+            <li>
+                <a href="artes.html">
+                    <i class="fa-solid fa-image"></i>
+                    Desenhos
+                </a>
+            </li>
 
-          <div class="form-group">
-            <label for="nome">Nome *</label>
-            <input type="text" id="nome" required placeholder="Ex: Astraea Moonfall">
-          </div>
+            <li>
+                <a href="configuracoes-personagens.html" class="active">
+                    <i class="fa-solid fa-gear"></i>
+                    Configurações
+                </a>
+            </li>
+        </ul>
+    </nav>
 
-          <div class="form-row">
-            <div class="form-group">
-              <label for="idade">Idade</label>
-              <input type="text" id="idade" placeholder="Ex: 24 anos">
+</header>
+
+
+<main class="container">
+
+    <h1 class="page-title">
+        <i class="fa-solid fa-users-gear"></i>
+        GERENCIAR PERSONAGENS
+    </h1>
+
+
+    <!-- ============================= -->
+    <!-- FORMULÁRIO -->
+    <!-- ============================= -->
+
+    <form id="char-form">
+
+        <!-- INFORMAÇÕES BÁSICAS -->
+
+        <section class="admin-section">
+
+            <div class="section-heading">
+                <div>
+                    <span class="section-number">01</span>
+
+                    <div>
+                        <h2>Informações básicas</h2>
+                        <p>Identificação principal do personagem.</p>
+                    </div>
+                </div>
             </div>
 
-            <div class="form-group">
-              <label for="corCard">Cor do Card</label>
-              <input type="color" id="corCard" value="#5a122a">
+
+            <div class="form-grid">
+
+                <div class="campo campo-full">
+                    <label for="char-name">
+                        Nome <span class="obrigatorio">*</span>
+                    </label>
+
+                    <input
+                        type="text"
+                        id="char-name"
+                        placeholder="Ex: Nina"
+                        required
+                    >
+                </div>
+
+
+                <div class="campo">
+                    <label for="char-age">Idade</label>
+
+                    <input
+                        type="text"
+                        id="char-age"
+                        placeholder="Ex: 24 anos"
+                    >
+                </div>
+
+
+                <div class="campo">
+                    <label for="char-gender">Gênero</label>
+
+                    <input
+                        type="text"
+                        id="char-gender"
+                        placeholder="Ex: Feminino"
+                    >
+                </div>
+
+
+                <div class="campo campo-full">
+                    <label for="char-occupation">Ocupação</label>
+
+                    <input
+                        type="text"
+                        id="char-occupation"
+                        placeholder="Ex: Veterinária"
+                    >
+                </div>
+
+
+                <div class="campo campo-full">
+
+                    <label for="char-image-file">
+                        Foto do personagem
+                    </label>
+
+                    <div class="file-area">
+
+                        <input
+                            type="file"
+                            id="char-image-file"
+                            accept="image/*"
+                        >
+
+                        <i class="fa-solid fa-image"></i>
+
+                        <span>
+                            Escolher imagem da galeria do celular
+                        </span>
+
+                    </div>
+
+                    <small id="file-size-info"></small>
+
+                </div>
+
+
+                <div class="campo">
+
+                    <label for="char-card-color">
+                        Cor do card
+                    </label>
+
+                    <div class="color-wrapper">
+
+                        <input
+                            type="color"
+                            id="char-card-color"
+                            value="#3A0B17"
+                        >
+
+                        <span id="color-value">#3A0B17</span>
+
+                    </div>
+
+                </div>
+
             </div>
-          </div>
 
-          <div class="form-group">
-            <label for="foto">Foto de Perfil</label>
-            <input type="file" id="foto" accept="image/*">
-            <span class="file-hint">A imagem será salva no Firebase Storage.</span>
-          </div>
+        </section>
 
-          <div class="form-group">
-            <label for="resumo">Resumo (Exibido no Card) *</label>
-            <textarea id="resumo" rows="2" required placeholder="Breve introdução..."></textarea>
-          </div>
 
-          <div class="form-group">
-            <label for="personalidade">Personalidade</label>
-            <textarea id="personalidade" rows="3"></textarea>
-          </div>
 
-          <div class="form-group">
-            <label for="aparencia">Aparência</label>
-            <textarea id="aparencia" rows="3"></textarea>
-          </div>
+        <!-- ============================= -->
+        <!-- FICHA -->
+        <!-- ============================= -->
 
-          <div class="form-group">
-            <label for="historia">História</label>
-            <textarea id="historia" rows="4"></textarea>
-          </div>
+        <section class="admin-section">
 
-          <div class="form-group">
-            <label for="relacoes">Relações</label>
-            <textarea id="relacoes" rows="3"></textarea>
-          </div>
+            <div class="section-heading">
 
-          <div class="form-group">
-            <label for="habilidades">Habilidades</label>
-            <textarea id="habilidades" rows="3"></textarea>
-          </div>
+                <div>
+                    <span class="section-number">02</span>
 
-          <div class="form-group">
-            <label for="curiosidades">Curiosidades</label>
-            <textarea id="curiosidades" rows="3"></textarea>
-          </div>
+                    <div>
+                        <h2>Ficha do personagem</h2>
+                        <p>
+                            Essas informações aparecem na ficha completa.
+                        </p>
+                    </div>
+                </div>
 
-          <div class="form-actions">
-            <button type="submit" id="btnSave" class="btn-primary">
-              <i class="fa-solid fa-floppy-disk"></i> Salvar Personagem
-            </button>
-            <button type="button" id="btnCancel" class="btn-secondary" style="display: none;">
-              Cancelar Edição
-            </button>
-          </div>
-        </form>
-      </section>
+            </div>
 
-      <!-- Lista de Controle / Tabela -->
-      <section class="list-container">
-        <div class="list-header">
-          <h2>Personagens Cadastrados</h2>
-          <button id="btnDeleteSelected" class="btn-danger" disabled>
-            <i class="fa-solid fa-trash"></i> Excluir Selecionados
-          </button>
+
+            <div class="campo">
+
+                <label for="char-summary">
+                    Resumo
+                </label>
+
+                <textarea
+                    id="char-summary"
+                    rows="3"
+                    placeholder="Uma breve apresentação do personagem..."
+                ></textarea>
+
+            </div>
+
+
+            <div class="campo">
+
+                <label for="char-personality">
+                    Personalidade
+                </label>
+
+                <textarea
+                    id="char-personality"
+                    rows="4"
+                    placeholder="Como esse personagem é?"
+                ></textarea>
+
+            </div>
+
+
+            <div class="campo">
+
+                <label for="char-bio">
+                    História / Lore
+                </label>
+
+                <textarea
+                    id="char-bio"
+                    rows="6"
+                    placeholder="Conte a história do personagem..."
+                ></textarea>
+
+            </div>
+
+
+            <div class="campo">
+
+                <label for="char-curiosities">
+                    Curiosidades
+                </label>
+
+                <textarea
+                    id="char-curiosities"
+                    rows="4"
+                    placeholder="Pequenas informações, hábitos, gostos ou fatos curiosos..."
+                ></textarea>
+
+            </div>
+
+
+            <!-- RELAÇÕES -->
+
+            <div class="sub-secao">
+
+                <div class="sub-heading">
+
+                    <div>
+                        <i class="fa-solid fa-heart"></i>
+
+                        <div>
+                            <h3>Relações</h3>
+
+                            <p>
+                                Adicione personagens relacionados.
+                            </p>
+                        </div>
+                    </div>
+
+                </div>
+
+
+                <div id="relations-container"></div>
+
+
+                <button
+                    type="button"
+                    class="btn-secundario"
+                    id="btn-add-relation"
+                >
+                    <i class="fa-solid fa-plus"></i>
+                    Adicionar vínculo
+                </button>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- ============================= -->
+        <!-- PREVIEWS -->
+        <!-- ============================= -->
+
+        <section class="preview-area">
+
+            <!-- CARD DA GALERIA -->
+
+            <div class="preview-box">
+
+                <div class="preview-heading">
+
+                    <span>03</span>
+
+                    <div>
+                        <h2>Preview do card</h2>
+                        <p>Como aparecerá na galeria.</p>
+                    </div>
+
+                </div>
+
+
+                <div class="gallery-preview">
+
+                    <div class="gallery-preview-image">
+
+                        <img
+                            id="pv-gallery-img"
+                            src=""
+                            alt="Preview"
+                        >
+
+                        <div
+                            class="no-image"
+                            id="pv-no-image"
+                        >
+                            <i class="fa-solid fa-image"></i>
+                            <span>Sem foto</span>
+                        </div>
+
+                    </div>
+
+
+                    <h3 id="pv-gallery-name">
+                        Nome
+                    </h3>
+
+
+                    <a href="#" class="preview-button">
+                        Ler mais
+                    </a>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- FICHA -->
+
+            <div class="preview-box">
+
+                <div class="preview-heading">
+
+                    <span>04</span>
+
+                    <div>
+                        <h2>Preview da ficha</h2>
+                        <p>Como aparecerá ao abrir o personagem.</p>
+                    </div>
+
+                </div>
+
+
+                <div
+                    class="sheet-preview"
+                    id="sheet-preview"
+                >
+
+                    <div class="sheet-header">
+
+                        <div class="sheet-avatar">
+
+                            <img
+                                id="pv-sheet-img"
+                                src=""
+                                alt="Preview"
+                            >
+
+                            <div
+                                class="no-image"
+                                id="pv-sheet-no-image"
+                            >
+                                <i class="fa-solid fa-image"></i>
+                            </div>
+
+                        </div>
+
+
+                        <div class="sheet-name-area">
+
+                            <h3 id="pv-sheet-name">
+                                Nome
+                            </h3>
+
+                            <div
+                                class="sheet-stats"
+                                id="pv-sheet-stats"
+                            ></div>
+
+                        </div>
+
+                    </div>
+
+
+                    <div
+                        class="sheet-section"
+                        id="preview-summary-section"
+                    >
+                        <h4>Resumo</h4>
+                        <p id="pv-summary">
+                            —
+                        </p>
+                    </div>
+
+
+                    <div
+                        class="sheet-section"
+                        id="preview-personality-section"
+                    >
+                        <h4>Personalidade</h4>
+                        <p id="pv-personality">
+                            —
+                        </p>
+                    </div>
+
+
+                    <div
+                        class="sheet-section"
+                        id="preview-history-section"
+                    >
+                        <h4>História</h4>
+                        <p id="pv-bio">
+                            —
+                        </p>
+                    </div>
+
+
+                    <div
+                        class="sheet-section"
+                        id="preview-curiosities-section"
+                    >
+                        <h4>Curiosidades</h4>
+                        <p id="pv-curiosities">
+                            —
+                        </p>
+                    </div>
+
+
+                    <div
+                        class="sheet-section"
+                        id="preview-relations-section"
+                    >
+                        <h4>Relações</h4>
+
+                        <div
+                            id="pv-relations-list"
+                            class="preview-relations"
+                        ></div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- SALVAR -->
+
+        <button
+            type="submit"
+            class="btn-save"
+        >
+            <i class="fa-solid fa-floppy-disk"></i>
+            Salvar personagem
+        </button>
+
+    </form>
+
+
+
+    <!-- ============================= -->
+    <!-- PERSONAGENS CADASTRADOS -->
+    <!-- ============================= -->
+
+    <section class="admin-section">
+
+        <div class="section-heading">
+
+            <div>
+
+                <span class="section-number">05</span>
+
+                <div>
+                    <h2>Personagens cadastrados</h2>
+                    <p>Personagens já salvos no sistema.</p>
+                </div>
+
+            </div>
+
         </div>
 
-        <div class="table-wrapper">
-          <table>
-            <thead>
-              <tr>
-                <th width="40"><input type="checkbox" id="selectAll"></th>
-                <th width="60">Foto</th>
-                <th>Nome</th>
-                <th width="100">Ações</th>
-              </tr>
-            </thead>
-            <tbody id="characterTableBody">
-              <tr>
-                <td colspan="4" class="loading-cell">Carregando lista...</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </section>
-    </div>
-  </main>
 
-  <script type="module" src="addpers.js"></script>
+        <div
+            class="lista"
+            id="characters-list"
+        >
+
+            <div class="lista-vazia">
+                <i class="fa-solid fa-users"></i>
+                <p>Nenhum personagem cadastrado.</p>
+            </div>
+
+        </div>
+
+    </section>
+
+</main>
+
+
+<footer class="footer">
+    <p>© 2026 gForce_ART</p>
+</footer>
+
+
+<script type="module" src="addpers.js"></script>
+
 </body>
 </html>

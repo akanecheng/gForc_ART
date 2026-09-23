@@ -26,8 +26,14 @@ body {
     background-color: var(--c-1);
     color: var(--c-7);
     font-family: 'Plus Jakarta Sans', sans-serif;
+
     min-height: 100vh;
+
+    display: flex;
+    flex-direction: column;
 }
+
+
 
 /* Header & Navbar */
 .navbar {
@@ -46,6 +52,12 @@ body {
     display: flex;
     align-items: center;
     justify-content: space-between;
+
+    width: 100%;
+    max-width: 1100px;
+
+    margin: 0 auto;
+
     padding: 16px 20px;
 }
 
@@ -125,7 +137,7 @@ body {
 .nav-links a {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 12px;
 
     padding: 10px 12px;
 
@@ -133,11 +145,14 @@ body {
 
     text-decoration: none;
 
-    font-size: 15px;
+    font-size: 0.95rem;
     font-weight: 500;
 
-    line-height: 1;
+    border-radius: 8px;
+
+    transition: .2s;
 }
+
 
 .nav-links a:hover {
     color: var(--c-7);
@@ -172,6 +187,7 @@ body {
     max-width: 480px;
     margin: 100px auto 0;
     padding: 20px 16px;
+    flex: 1;
 }
 
 .page-title {
@@ -243,4 +259,18 @@ body {
 .card-subtitle {
     font-size: 0.8rem;
     color: var(--c-6);
+}
+
+.footer {
+    width: 100%;
+
+    margin-top: 60px;
+    padding: 24px 20px;
+
+    text-align: center;
+
+    border-top: 1px solid rgba(247,214,220,.1);
+
+    color: var(--c-6);
+    font-size: .85rem;
 }

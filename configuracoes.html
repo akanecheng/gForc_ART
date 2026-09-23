@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Configurações - gForce_ART</title>
+
+
+    <!-- Font Awesome -->
+
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    >
+
+
+    <!-- Fonte -->
+
+    <link
+        rel="preconnect"
+        href="https://fonts.googleapis.com"
+    >
+
+    <link
+        rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossorigin
+    >
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap"
+        rel="stylesheet"
+    >
+
+
+    <link
+        rel="stylesheet"
+        href="configuracoes.css"
+    >
+
+</head>
+
+
+<body>
+
+
+<!-- ================================= -->
+<!-- NAVBAR -->
+<!-- ================================= -->
+
+<header class="navbar">
+
+    <div class="logo">
+
+        <span class="logo-icon">
+            <i class="fa-solid fa-paint-brush"></i>
+        </span>
+
+        <span class="logo-text">
+            gForce_ART
+        </span>
+
+    </div>
+
+
+    <button
+        class="menu-toggle"
+        id="menuToggle"
+        aria-label="Abrir menu"
+    >
+
+        <i class="fa-solid fa-bars"></i>
+
+    </button>
+
+
+    <nav
+        class="nav-drawer"
+        id="navDrawer"
+    >
+
+        <ul>
+
+            <li>
+                <a href="index.html">
+
+                    <i class="fa-solid fa-house"></i>
+
+                    Início
+
+                </a>
+            </li>
+
+
+            <li>
+                <a href="personagens.html">
+
+                    <i class="fa-solid fa-users"></i>
+
+                    Personagens
+
+                </a>
+            </li>
+
+
+            <li>
+                <a href="artes.html">
+
+                    <i class="fa-solid fa-image"></i>
+
+                    Desenhos
+
+                </a>
+            </li>
+
+
+            <li>
+                <a
+                    href="configuracoes.html"
+                    class="active"
+                >
+
+                    <i class="fa-solid fa-gear"></i>
+
+                    Configurações
+
+                </a>
+            </li>
+
+        </ul>
+
+    </nav>
+
+</header>
+
+
+
+<!-- ================================= -->
+<!-- CONTEÚDO -->
+<!-- ================================= -->
+
+<main class="container">
+
+
+    <section class="intro">
+
+        <div class="intro-icon">
+
+            <i class="fa-solid fa-sliders"></i>
+
+        </div>
+
+
+        <div>
+
+            <h1>
+                Configurações
+            </h1>
+
+            <p>
+                Gerencie o conteúdo do seu site.
+            </p>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- ================================= -->
+    <!-- CATEGORIA PERSONAGENS -->
+    <!-- ================================= -->
+
+    <section class="config-section">
+
+
+        <div class="section-title">
+
+            <div class="title-icon">
+
+                <i class="fa-solid fa-users"></i>
+
+            </div>
+
+
+            <div>
+
+                <h2>
+                    Personagens
+                </h2>
+
+                <p>
+                    Crie, edite e organize seus personagens.
+                </p>
+
+            </div>
+
+        </div>
+
+
+
+        <div class="config-grid">
+
+
+            <!-- GERENCIAR -->
+
+            <a
+                href="addpers.html"
+                class="config-card"
+            >
+
+                <div class="card-icon">
+
+                    <i class="fa-solid fa-user-gear"></i>
+
+                </div>
+
+
+                <div class="card-content">
+
+                    <h3>
+                        Gerenciar personagens
+                    </h3>
+
+                    <p>
+                        Criar novos personagens,
+                        editar fichas existentes
+                        e excluir personagens.
+                    </p>
+
+                </div>
+
+
+                <div class="card-arrow">
+
+                    <i class="fa-solid fa-chevron-right"></i>
+
+                </div>
+
+            </a>
+
+
+
+            <!-- GALERIA -->
+
+            <a
+                href="personagens.html"
+                class="config-card"
+            >
+
+                <div class="card-icon">
+
+                    <i class="fa-solid fa-table-cells-large"></i>
+
+                </div>
+
+
+                <div class="card-content">
+
+                    <h3>
+                        Ver personagens
+                    </h3>
+
+                    <p>
+                        Visualizar a galeria
+                        de personagens como
+                        os visitantes do site.
+                    </p>
+
+                </div>
+
+
+                <div class="card-arrow">
+
+                    <i class="fa-solid fa-chevron-right"></i>
+
+                </div>
+
+            </a>
+
+
+        </div>
+
+    </section>
+
+
+
+    <!-- ================================= -->
+    <!-- OUTRAS CONFIGURAÇÕES -->
+    <!-- ================================= -->
+
+    <section class="config-section">
+
+
+        <div class="section-title">
+
+            <div class="title-icon">
+
+                <i class="fa-solid fa-palette"></i>
+
+            </div>
+
+
+            <div>
+
+                <h2>
+                    Conteúdo do site
+                </h2>
+
+                <p>
+                    Outras áreas poderão ser adicionadas aqui.
+                </p>
+
+            </div>
+
+        </div>
+
+
+
+        <div class="config-grid">
+
+
+            <!-- ARTES -->
+
+            <a
+                href="configuracoes-artes.html"
+                class="config-card disabled-card"
+                onclick="return false;"
+            >
+
+                <div class="card-icon">
+
+                    <i class="fa-solid fa-image"></i>
+
+                </div>
+
+
+                <div class="card-content">
+
+                    <h3>
+                        Gerenciar artes
+                    </h3>
+
+                    <p>
+                        Gerencie os desenhos
+                        exibidos no site.
+                    </p>
+
+                    <span class="coming-soon">
+                        Em desenvolvimento
+                    </span>
+
+                </div>
+
+
+                <div class="card-arrow">
+
+                    <i class="fa-solid fa-lock"></i>
+
+                </div>
+
+            </a>
+
+
+
+            <!-- PÁGINA INICIAL -->
+
+            <a
+                href="configuracoes-inicio.html"
+                class="config-card disabled-card"
+                onclick="return false;"
+            >
+
+                <div class="card-icon">
+
+                    <i class="fa-solid fa-house"></i>
+
+                </div>
+
+
+                <div class="card-content">
+
+                    <h3>
+                        Página inicial
+                    </h3>
+
+                    <p>
+                        Gerencie conteúdos
+                        da página principal.
+                    </p>
+
+                    <span class="coming-soon">
+                        Em desenvolvimento
+                    </span>
+
+                </div>
+
+
+                <div class="card-arrow">
+
+                    <i class="fa-solid fa-lock"></i>
+
+                </div>
+
+            </a>
+
+
+        </div>
+
+    </section>
+
+
+
+    <!-- VOLTAR -->
+
+    <a
+        href="index.html"
+        class="back-link"
+    >
+
+        <i class="fa-solid fa-arrow-left"></i>
+
+        Voltar para o site
+
+    </a>
+
+
+</main>
+
+
+
+<!-- ================================= -->
+<!-- FOOTER -->
+<!-- ================================= -->
+
+<footer class="footer">
+
+    <p>
+        © 2026 gForce_ART
+    </p>
+
+</footer>
+
+
+
+<script src="configuracoes.js"></script>
+
+</body>
+
+</html>

@@ -1,255 +1,1391 @@
-import { db, storage } from './firebase-config.js';
-import { 
-  collection, 
-  addDoc, 
-  getDocs, 
-  doc, 
-  updateDoc, 
-  deleteDoc, 
-  onSnapshot 
+
+
+import {
+    collection,
+    addDoc,
+    getDocs,
+    deleteDoc,
+    doc,
+    updateDoc
 } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
-import { 
-  ref, 
-  uploadBytes, 
-  getDownloadURL 
-} from "https://www.gstatic.com/firebasejs/10.8.0/firebase-storage.js";
+import { db } from "./firebase-config.js";
 
-document.addEventListener('DOMContentLoaded', () => {
-  const menuToggle = document.getElementById('menuToggle');
-  const navLinks = document.getElementById('navLinks');
+console.log("🔥 ADDPERS.JS COMEÇOU A RODAR");
 
-  const characterForm = document.getElementById('characterForm');
-  const formTitle = document.getElementById('formTitle');
-  const charIdInput = document.getElementById('charId');
-  const btnSave = document.getElementById('btnSave');
-  const btnCancel = document.getElementById('btnCancel');
-  const tableBody = document.getElementById('characterTableBody');
-  const selectAllCheckbox = document.getElementById('selectAll');
-  const btnDeleteSelected = document.getElementById('btnDeleteSelected');
+let base64ImageComprimida = "";
+let personagensExistentes = [];
+let personagemEditandoId = null;
+let personagensCompletos = [];
 
-  let charactersList = [];
-  let selectedIds = new Set();
+document.addEventListener("DOMContentLoaded", async () => {
 
-  menuToggle.addEventListener('click', () => {
-    navLinks.classList.toggle('show');
-  });
+    /* =========================
+       MENU
+    ========================= */
 
-  // Atualização em tempo real da lista via Firestore
-  function listenToCharacters() {
-    onSnapshot(collection(db, "personagens"), (snapshot) => {
-      charactersList = [];
-      snapshot.forEach((doc) => {
-        charactersList.push({ id: doc.id, ...doc.data() });
-      });
-      renderTable(charactersList);
-    }, (error) => {
-      console.error("Erro ao ouvir alterações: ", error);
-    });
-  }
+    const menuToggle = document.getElementById("menuToggle");
+    const navDrawer = document.getElementById("navDrawer");
 
-  // Exibir dados na tabela
-  function renderTable(list) {
-    if (list.length === 0) {
-      tableBody.innerHTML = `<tr><td colspan="4" class="loading-cell">Nenhum personagem cadastrado.</td></tr>`;
-      return;
+    if (menuToggle && navDrawer) {
+
+        menuToggle.addEventListener("click", () => {
+            navDrawer.classList.toggle("open");
+        });
+
     }
 
-    tableBody.innerHTML = list.map(char => {
-      const imgUrl = char.foto || 'https://via.placeholder.com/40/3b0a1a/fcebf0?text=?';
-      const isChecked = selectedIds.has(char.id) ? 'checked' : '';
 
-      return `
-        <tr>
-          <td>
-            <input type="checkbox" class="char-checkbox" data-id="${char.id}" ${isChecked}>
-          </td>
-          <td>
-            <img src="${imgUrl}" class="thumb-img" alt="Thumb">
-          </td>
-          <td><strong>${char.nome || 'Sem Nome'}</strong></td>
-          <td>
-            <div class="table-actions">
-              <button class="btn-icon btn-edit" data-id="${char.id}" title="Editar"><i class="fa-solid fa-pen"></i></button>
-              <button class="btn-icon btn-delete" data-id="${char.id}" title="Excluir"><i class="fa-solid fa-trash"></i></button>
-            </div>
-          </td>
-        </tr>
-      `;
-    }).join('');
+    /* =========================
+       CAMPOS
+    ========================= */
 
-    attachTableEvents();
-  }
+    const inputName =
+        document.getElementById("char-name");
 
-  // Vincular eventos nas checkboxes e botões da tabela
-  function attachTableEvents() {
-    document.querySelectorAll('.char-checkbox').forEach(chk => {
-      chk.addEventListener('change', (e) => {
-        const id = e.target.dataset.id;
-        if (e.target.checked) {
-          selectedIds.add(id);
-        } else {
-          selectedIds.delete(id);
-        }
-        updateDeleteButton();
-      });
-    });
+    const inputAge =
+        document.getElementById("char-age");
 
-    document.querySelectorAll('.btn-edit').forEach(btn => {
-      btn.addEventListener('click', (e) => {
-        const id = e.currentTarget.dataset.id;
-        editCharacter(id);
-      });
-    });
+    const inputGender =
+        document.getElementById("char-gender");
 
-    document.querySelectorAll('.btn-delete').forEach(btn => {
-      btn.addEventListener('click', (e) => {
-        const id = e.currentTarget.dataset.id;
-        deleteSingleCharacter(id);
-      });
-    });
-  }
+    const inputOccupation =
+        document.getElementById("char-occupation");
 
-  // Selecionar todos os itens
-  selectAllCheckbox.addEventListener('change', (e) => {
-    if (e.target.checked) {
-      charactersList.forEach(c => selectedIds.add(c.id));
-    } else {
-      selectedIds.clear();
-    }
-    renderTable(charactersList);
-    updateDeleteButton();
-  });
+    const inputSummary =
+        document.getElementById("char-summary");
 
-  function updateDeleteButton() {
-    btnDeleteSelected.disabled = selectedIds.size === 0;
-  }
+    const inputPersonality =
+        document.getElementById("char-personality");
 
-  // Upload da imagem para o Firebase Storage
-  async function uploadImage(file) {
-    const storageRef = ref(storage, `personagens/${Date.now()}_${file.name}`);
-    await uploadBytes(storageRef, file);
-    return await getDownloadURL(storageRef);
-  }
+    const inputBio =
+        document.getElementById("char-bio");
 
-  // Submissão do Formulário (Criar / Editar)
-  characterForm.addEventListener('submit', async (e) => {
-    e.preventDefault();
+    const inputCuriosities =
+        document.getElementById("char-curiosities");
 
-    const id = charIdInput.value;
-    const fileInput = document.getElementById('foto');
-    const file = fileInput.files[0];
+    const inputFile =
+        document.getElementById("char-image-file");
 
-    btnSave.disabled = true;
-    btnSave.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Salvando...`;
+    const inputColor =
+        document.getElementById("char-card-color");
+
+
+    /* =========================
+       PREVIEW CARD
+    ========================= */
+
+    const pvGalleryImg =
+        document.getElementById("pv-gallery-img");
+
+    const pvGalleryName =
+        document.getElementById("pv-gallery-name");
+
+    const pvNoImage =
+        document.getElementById("pv-no-image");
+
+
+    /* =========================
+       PREVIEW FICHA
+    ========================= */
+
+    const pvSheetImg =
+        document.getElementById("pv-sheet-img");
+
+    const pvSheetName =
+        document.getElementById("pv-sheet-name");
+
+    const pvSheetNoImage =
+        document.getElementById("pv-sheet-no-image");
+
+    const pvSheetStats =
+        document.getElementById("pv-sheet-stats");
+
+    const pvSummary =
+        document.getElementById("pv-summary");
+
+    const pvPersonality =
+        document.getElementById("pv-personality");
+
+    const pvBio =
+        document.getElementById("pv-bio");
+
+    const pvCuriosities =
+        document.getElementById("pv-curiosities");
+
+
+    const summarySection =
+        document.getElementById("preview-summary-section");
+
+    const personalitySection =
+        document.getElementById("preview-personality-section");
+
+    const historySection =
+        document.getElementById("preview-history-section");
+
+    const curiositiesSection =
+        document.getElementById("preview-curiosities-section");
+
+    const relationsSection =
+        document.getElementById("preview-relations-section");
+
+    const pvRelationsList =
+        document.getElementById("pv-relations-list");
+
+
+    /* =========================
+       RELAÇÕES
+    ========================= */
+
+    const relationsContainer =
+        document.getElementById("relations-container");
+
+    const btnAddRelation =
+        document.getElementById("btn-add-relation");
+
+
+    /* =========================
+       CARREGAR PERSONAGENS
+    ========================= */
+
+    async function carregarPersonagens() {
 
     try {
-      let photoUrl = null;
 
-      if (file) {
-        photoUrl = await uploadImage(file);
-      }
+        const snapshot = await getDocs(
+            collection(db, "personagens")
+        );
 
-      const characterData = {
-        nome: document.getElementById('nome').value,
-        idade: document.getElementById('idade').value,
-        corCard: document.getElementById('corCard').value,
-        resumo: document.getElementById('resumo').value,
-        personalidade: document.getElementById('personalidade').value,
-        aparencia: document.getElementById('aparencia').value,
-        historia: document.getElementById('historia').value,
-        relacoes: document.getElementById('relacoes').value,
-        habilidades: document.getElementById('habilidades').value,
-        curiosidades: document.getElementById('curiosidades').value,
-        updatedAt: new Date()
-      };
+        personagensExistentes = [];
 
-      if (id) {
-        // Atualização
-        if (photoUrl) characterData.foto = photoUrl;
-        await updateDoc(doc(db, "personagens", id), characterData);
-        alert("Personagem atualizado com sucesso!");
-      } else {
-        // Criação
-        characterData.foto = photoUrl || '';
-        characterData.createdAt = new Date();
-        await addDoc(collection(db, "personagens"), characterData);
-        alert("Personagem cadastrado com sucesso!");
-      }
+        snapshot.forEach(documento => {
 
-      resetForm();
-    } catch (error) {
-      console.error("Erro ao salvar:", error);
-      alert("Erro ao salvar personagem. Tente novamente.");
-    } finally {
-      btnSave.disabled = false;
-      btnSave.innerHTML = `<i class="fa-solid fa-floppy-disk"></i> Salvar Personagem`;
+            const personagem = documento.data();
+
+            if (personagem.nome) {
+
+                personagensExistentes.push(
+                    personagem.nome
+                );
+
+            }
+
+        });
+
+        personagensExistentes.sort((a, b) =>
+            a.localeCompare(b, "pt-BR")
+        );
+
+        console.log(
+            "Personagens encontrados:",
+            personagensExistentes
+        );
+
+    } catch (erro) {
+
+        console.error(
+            "ERRO COMPLETO:"
+        );
+
+        console.error(erro);
+        console.error(erro.message);
+        console.error(erro.stack);
+
     }
-  });
 
-  // Preencher formulário para edição
-  function editCharacter(id) {
-    const char = charactersList.find(c => c.id === id);
-    if (!char) return;
+}
 
-    charIdInput.value = char.id;
-    document.getElementById('nome').value = char.nome || '';
-    document.getElementById('idade').value = char.idade || '';
-    document.getElementById('corCard').value = char.corCard || '#5a122a';
-    document.getElementById('resumo').value = char.resumo || '';
-    document.getElementById('personalidade').value = char.personalidade || '';
-    document.getElementById('aparencia').value = char.aparencia || '';
-    document.getElementById('historia').value = char.historia || '';
-    document.getElementById('relacoes').value = char.relacoes || '';
-    document.getElementById('habilidades').value = char.habilidades || '';
-    document.getElementById('curiosidades').value = char.curiosidades || '';
+    /* =========================
+       CRIAR LINHA DE VÍNCULO
+    ========================= */
 
-    formTitle.textContent = "Editar Personagem";
-    btnCancel.style.display = "inline-flex";
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  }
+    function criarLinhaVinculo() {
 
-  // Cancelar Edição
-  btnCancel.addEventListener('click', resetForm);
+        const row =
+            document.createElement("div");
 
-  function resetForm() {
-    characterForm.reset();
-    charIdInput.value = '';
-    document.getElementById('corCard').value = '#5a122a';
-    formTitle.textContent = "Novo Personagem";
-    btnCancel.style.display = "none";
-  }
+        row.className =
+            "relation-row";
 
-  // Deleção individual
-  async function deleteSingleCharacter(id) {
-    if (confirm("Tem certeza que deseja excluir este personagem?")) {
-      try {
-        await deleteDoc(doc(db, "personagens", id));
-        selectedIds.delete(id);
-        updateDeleteButton();
-      } catch (error) {
-        console.error("Erro ao deletar:", error);
-      }
+
+        let options = `
+            <option value="">
+                Personagem
+            </option>
+        `;
+
+
+        personagensExistentes.forEach(nome => {
+
+            options += `
+                <option value="${escaparHTML(nome)}">
+                    ${escaparHTML(nome)}
+                </option>
+            `;
+
+        });
+
+
+        row.innerHTML = `
+
+            <select class="rel-target">
+
+                ${options}
+
+            </select>
+
+
+            <input
+                type="text"
+                class="rel-type"
+                placeholder="Tipo de vínculo"
+            >
+
+
+            <button
+                type="button"
+                class="btn-remove-relation"
+                title="Remover"
+            >
+
+                <i class="fa-solid fa-xmark"></i>
+
+            </button>
+
+        `;
+
+
+        row.querySelector(".rel-target")
+            .addEventListener(
+                "change",
+                atualizarPreview
+            );
+
+
+        row.querySelector(".rel-type")
+            .addEventListener(
+                "input",
+                atualizarPreview
+            );
+
+
+        row.querySelector(".btn-remove-relation")
+            .addEventListener(
+                "click",
+                () => {
+
+                    row.remove();
+
+                    atualizarPreview();
+
+                }
+            );
+
+
+        relationsContainer.appendChild(row);
+
     }
-  }
 
-  // Deleção em massa
-  btnDeleteSelected.addEventListener('click', async () => {
-    if (selectedIds.size === 0) return;
 
-    if (confirm(`Excluir ${selectedIds.size} personagem(ns) selecionado(s)?`)) {
-      btnDeleteSelected.disabled = true;
-      try {
-        const promises = Array.from(selectedIds).map(id => deleteDoc(doc(db, "personagens", id)));
-        await Promise.all(promises);
-        selectedIds.clear();
-        selectAllCheckbox.checked = false;
-        updateDeleteButton();
-      } catch (error) {
-        console.error("Erro na exclusão em massa:", error);
-      }
+    if (btnAddRelation) {
+
+        btnAddRelation.addEventListener(
+            "click",
+            criarLinhaVinculo
+        );
+
     }
-  });
 
-  listenToCharacters();
+
+    /* =========================
+       PREVIEW
+    ========================= */
+
+    function atualizarPreview() {
+
+        const nome =
+            inputName.value.trim();
+
+        const idade =
+            inputAge.value.trim();
+
+        const genero =
+            inputGender.value.trim();
+
+        const ocupacao =
+            inputOccupation.value.trim();
+
+        const resumo =
+            inputSummary.value.trim();
+
+        const personalidade =
+            inputPersonality.value.trim();
+
+        const historia =
+            inputBio.value.trim();
+
+        const curiosidades =
+            inputCuriosities.value.trim();
+
+
+        pvGalleryName.textContent =
+            nome || "Nome";
+
+
+        pvSheetName.textContent =
+            nome || "Nome";
+
+
+        pvSheetStats.innerHTML = "";
+
+
+        if (idade) {
+
+            pvSheetStats.innerHTML += `
+                <span class="sheet-stat">
+                    Idade: ${escaparHTML(idade)}
+                </span>
+            `;
+
+        }
+
+
+        if (genero) {
+
+            pvSheetStats.innerHTML += `
+                <span class="sheet-stat">
+                    ${escaparHTML(genero)}
+                </span>
+            `;
+
+        }
+
+
+        if (ocupacao) {
+
+            pvSheetStats.innerHTML += `
+                <span class="sheet-stat">
+                    ${escaparHTML(ocupacao)}
+                </span>
+            `;
+
+        }
+
+
+        atualizarSecao(
+            summarySection,
+            pvSummary,
+            resumo
+        );
+
+
+        atualizarSecao(
+            personalitySection,
+            pvPersonality,
+            personalidade
+        );
+
+
+        atualizarSecao(
+            historySection,
+            pvBio,
+            historia
+        );
+
+
+        atualizarSecao(
+            curiositiesSection,
+            pvCuriosities,
+            curiosidades
+        );
+
+
+        const cor =
+            inputColor.value || "#3A0B17";
+
+
+        const galleryPreview =
+            document.querySelector(".gallery-preview");
+
+
+        if (galleryPreview) {
+
+            galleryPreview.style.backgroundColor =
+                cor;
+
+        }
+
+
+        atualizarRelacoes();
+
+    }
+
+
+    function atualizarSecao(
+        section,
+        elemento,
+        valor
+    ) {
+
+        if (!section || !elemento) return;
+
+
+        if (valor) {
+
+            section.style.display = "block";
+
+            elemento.textContent = valor;
+
+        } else {
+
+            section.style.display = "none";
+
+        }
+
+    }
+
+
+    /* =========================
+       PREVIEW RELAÇÕES
+    ========================= */
+
+    function atualizarRelacoes() {
+
+        const rows =
+            document.querySelectorAll(
+                ".relation-row"
+            );
+
+
+        const relacoes = [];
+
+
+        rows.forEach(row => {
+
+            const alvo =
+                row.querySelector(
+                    ".rel-target"
+                ).value;
+
+            const tipo =
+                row.querySelector(
+                    ".rel-type"
+                ).value.trim();
+
+
+            if (alvo) {
+
+                relacoes.push({
+                    alvo,
+                    tipo: tipo || "Vínculo"
+                });
+
+            }
+
+        });
+
+
+        if (relacoes.length === 0) {
+
+            relationsSection.style.display =
+                "none";
+
+            pvRelationsList.innerHTML =
+                "";
+
+            return;
+
+        }
+
+
+        relationsSection.style.display =
+            "block";
+
+
+        pvRelationsList.innerHTML =
+            relacoes.map(relacao => `
+
+                <div class="preview-relation">
+
+                    <strong>
+                        ${escaparHTML(relacao.tipo)}
+                    </strong>
+
+                    — ${escaparHTML(relacao.alvo)}
+
+                </div>
+
+            `).join("");
+
+    }
+
+
+    /* =========================
+       IMAGEM
+    ========================= */
+
+    inputFile.addEventListener(
+        "change",
+        event => {
+
+            const file =
+                event.target.files[0];
+
+
+            if (!file) return;
+
+
+            const reader =
+                new FileReader();
+
+
+            reader.readAsDataURL(file);
+
+
+            reader.onload = event => {
+
+                const img =
+                    new Image();
+
+
+                img.src =
+                    event.target.result;
+
+
+                img.onload = () => {
+
+                    const canvas =
+                        document.createElement(
+                            "canvas"
+                        );
+
+
+                    const MAX_WIDTH = 500;
+
+
+                    let width =
+                        img.width;
+
+                    let height =
+                        img.height;
+
+
+                    if (width > MAX_WIDTH) {
+
+                        const escala =
+                            MAX_WIDTH / width;
+
+
+                        width =
+                            MAX_WIDTH;
+
+
+                        height =
+                            height * escala;
+
+                    }
+
+
+                    canvas.width =
+                        width;
+
+                    canvas.height =
+                        height;
+
+
+                    const ctx =
+                        canvas.getContext("2d");
+
+
+                    ctx.drawImage(
+                        img,
+                        0,
+                        0,
+                        width,
+                        height
+                    );
+
+
+                    base64ImageComprimida =
+                        canvas.toDataURL(
+                            "image/jpeg",
+                            0.70
+                        );
+
+
+                    pvGalleryImg.src =
+                        base64ImageComprimida;
+
+                    pvGalleryImg.style.display =
+                        "block";
+
+                    pvNoImage.style.display =
+                        "none";
+
+
+                    pvSheetImg.src =
+                        base64ImageComprimida;
+
+                    pvSheetImg.style.display =
+                        "block";
+
+                    pvSheetNoImage.style.display =
+                        "none";
+
+
+                    const sizeKB =
+                        Math.round(
+                            (
+                                base64ImageComprimida.length *
+                                0.75
+                            ) / 1024
+                        );
+
+
+                    document.getElementById(
+                        "file-size-info"
+                    ).textContent =
+                        `Imagem compactada: aproximadamente ${sizeKB} KB`;
+
+                };
+
+            };
+
+        }
+    );
+
+
+    /* =========================
+       CAMPOS → PREVIEW
+    ========================= */
+
+    [
+
+        inputName,
+        inputAge,
+        inputGender,
+        inputOccupation,
+        inputSummary,
+        inputPersonality,
+        inputBio,
+        inputCuriosities,
+        inputColor
+
+    ].forEach(campo => {
+
+        campo.addEventListener(
+            "input",
+            atualizarPreview
+        );
+
+    });
+
+
+    /* =========================
+       COR
+    ========================= */
+
+    inputColor.addEventListener(
+        "input",
+        () => {
+
+            document.getElementById(
+                "color-value"
+            ).textContent =
+                inputColor.value.toUpperCase();
+
+        }
+    );
+    
+        /* =========================
+       SALVAR
+    ========================= */
+
+    const form =
+        document.getElementById(
+            "char-form"
+        );
+
+
+    form.addEventListener(
+        "submit",
+        async event => {
+
+            event.preventDefault();
+
+
+            const relacoes = [];
+
+
+            document
+                .querySelectorAll(".relation-row")
+                .forEach(row => {
+
+                    const alvo =
+                        row.querySelector(
+                            ".rel-target"
+                        ).value;
+
+
+                    const tipo =
+                        row.querySelector(
+                            ".rel-type"
+                        ).value.trim();
+
+
+                    if (alvo) {
+
+                        relacoes.push({
+                            alvo,
+                            tipo: tipo || "Vínculo"
+                        });
+
+                    }
+
+                });
+
+
+            const personagem = {
+
+                nome:
+                    inputName.value.trim(),
+
+                idade:
+                    inputAge.value.trim(),
+
+                genero:
+                    inputGender.value.trim(),
+
+                ocupacao:
+                    inputOccupation.value.trim(),
+
+                resumo:
+                    inputSummary.value.trim(),
+
+                personalidade:
+                    inputPersonality.value.trim(),
+
+                historia:
+                    inputBio.value.trim(),
+
+                curiosidades:
+                    inputCuriosities.value.trim(),
+
+                imagemBase64:
+                    base64ImageComprimida,
+
+                corCard:
+                    inputColor.value,
+
+                relacoes,
+
+                criadoEm:
+                    new Date().toISOString()
+
+            };
+
+
+            try {
+
+                console.log(
+                    "Tentando salvar...",
+                    personagem
+                );
+
+
+                if (personagemEditandoId) {
+                    
+                    console.log("ID EDITANDO:");
+console.log(personagemEditandoId);
+
+console.log("PERSONAGEM:");
+console.log(personagem);
+
+    await updateDoc(
+        doc(
+            db,
+            "personagens",
+            personagemEditandoId
+        
+        ),
+        personagem
+    );
+
+    console.log("Personagem atualizado!");
+
+} else {
+
+    const docRef = await addDoc(
+        collection(db, "personagens"),
+        personagem
+    );
+
+    console.log(
+        "Salvo com ID:",
+        docRef.id
+    );
+
+}
+                alert(
+                    `Personagem "${personagem.nome}" salvo com sucesso!`
+                );
+
+
+                /*
+                   Recarrega os nomes dos
+                   personagens para os vínculos.
+                */
+
+                await carregarPersonagens();
+
+
+                /*
+                   Recarrega a lista de
+                   personagens cadastrados.
+                */
+
+                await carregarListaPersonagens();
+
+
+            } catch (erro) {
+
+                console.error(
+                    "Erro ao salvar:",
+                    erro
+                );
+
+
+                alert(
+                    "Erro ao salvar personagem."
+                );
+
+
+                return;
+
+            }
+
+
+            /* =========================
+               LIMPAR FORMULÁRIO
+            ========================= */
+
+            form.reset();
+
+
+            base64ImageComprimida =
+                "";
+
+
+            relationsContainer.innerHTML =
+                "";
+
+
+            criarLinhaVinculo();
+
+
+            pvGalleryImg.src =
+                "";
+
+            pvGalleryImg.style.display =
+                "none";
+
+
+            pvNoImage.style.display =
+                "flex";
+
+
+            pvSheetImg.src =
+                "";
+
+            pvSheetImg.style.display =
+                "none";
+
+
+            pvSheetNoImage.style.display =
+                "flex";
+
+
+            document.getElementById(
+                "file-size-info"
+            ).textContent =
+                "";
+
+
+            document.getElementById(
+                "color-value"
+            ).textContent =
+                "#3A0B17";
+
+
+            atualizarPreview();
+
+        }
+    );
+
+
+    /* =========================
+       LISTA DE CADASTRADOS
+    ========================= */
+
+ async function carregarListaPersonagens() {
+
+    const lista =
+        document.getElementById("characters-list");
+
+    if (!lista) return;
+
+
+    try {
+
+        const snapshot =
+            await getDocs(
+                collection(db, "personagens")
+            );
+
+
+        if (snapshot.empty) {
+
+            lista.innerHTML = `
+                <div class="lista-vazia">
+                    <i class="fa-regular fa-face-smile"></i>
+
+                    <p>
+                        Nenhum personagem cadastrado ainda.
+                    </p>
+                </div>
+            `;
+
+            return;
+        }
+
+
+        const personagens = [];
+
+
+        snapshot.forEach(documento => {
+
+            personagens.push({
+                id: documento.id,
+                ...documento.data()
+            });
+
+        });
+
+
+        personagens.sort((a, b) =>
+            (a.nome || "").localeCompare(
+                b.nome || "",
+                "pt-BR"
+            )
+        );
+        
+        personagensCompletos = personagens;
+
+
+        lista.innerHTML =
+            personagens.map(personagem => {
+
+                const imagem =
+                    personagem.imagemBase64
+                        ? `
+                            <img
+                                src="${personagem.imagemBase64}"
+                                alt="${escaparHTML(
+                                    personagem.nome || "Personagem"
+                                )}"
+                                class="personagem-lista-img"
+                            >
+                        `
+                        : `
+                            <div class="personagem-lista-sem-img">
+                                <i class="fa-regular fa-image"></i>
+                            </div>
+                        `;
+
+
+                const detalhes = [
+                    personagem.idade,
+                    personagem.ocupacao
+                ]
+                .filter(Boolean)
+                .join(" • ");
+
+
+                return `
+
+                    <div class="item">
+
+                        <div class="item-imagem">
+                            ${imagem}
+                        </div>
+
+
+                        <div class="item-info">
+
+                            <strong>
+                                ${escaparHTML(
+                                    personagem.nome ||
+                                    "Sem nome"
+                                )}
+                            </strong>
+
+
+                            <span>
+                                ${
+                                    detalhes
+                                    ? escaparHTML(detalhes)
+                                    : "Sem informações adicionais"
+                                }
+                            </span>
+
+                        </div>
+
+
+                        <div class="item-botoes">
+
+                            <a
+                                href="ficha.html?id=${personagem.id}"
+                                class="btn-acao btn-ver"
+                                title="Ver personagem"
+                            >
+                                <i class="fa-solid fa-eye"></i>
+                            </a>
+                            
+                            
+                            <button
+    class="btn-acao btn-editar"
+    data-id="${personagem.id}"
+>
+    <i class="fa-solid fa-pen"></i>
+</button>
+                            
+
+
+                            <button
+                                type="button"
+                                class="btn-acao btn-excluir"
+                                data-id="${personagem.id}"
+                                title="Excluir personagem"
+                            >
+                                <i class="fa-solid fa-trash"></i>
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                `;
+
+            }).join("");
+            
+            
+               document
+    .querySelectorAll(".btn-editar")
+    .forEach(botao => {
+
+        botao.addEventListener("click", () => {
+
+            const id =
+                botao.dataset.id;
+
+            editarPersonagem(id);
+
+        });
+
+    });
+
+
+
+        /* =========================
+           BOTÕES DE EXCLUIR
+        ========================= */
+
+        document
+            .querySelectorAll(".btn-excluir")
+            .forEach(botao => {
+
+                botao.addEventListener(
+                    "click",
+                    async () => {
+
+                        const id =
+                            botao.dataset.id;
+
+
+                        const item =
+                            botao.closest(".item");
+
+
+                        const nome =
+                            item?.querySelector(
+                                ".item-info strong"
+                            )?.textContent ||
+                            "este personagem";
+
+
+                        const confirmar =
+                            confirm(
+                                `Tem certeza que deseja excluir "${nome}"?`
+                            );
+
+
+                        if (!confirmar) return;
+
+
+                        try {
+
+                            await deleteDoc(
+                                doc(
+                                    db,
+                                    "personagens",
+                                    id
+                                )
+                            );
+
+
+                            alert(
+                                "Personagem excluído com sucesso!"
+                            );
+                            
+                            
+                         
+
+                            /*
+                             * Atualiza os nomes
+                             * disponíveis nos vínculos.
+                             */
+
+                            await carregarPersonagens();
+
+
+                            /*
+                             * Atualiza a lista
+                             * de cadastrados.
+                             */
+
+                            await carregarListaPersonagens();
+
+
+                        } catch (erro) {
+
+                            console.error(
+                                "Erro ao excluir:",
+                                erro
+                            );
+
+
+                            alert(
+                                "Não foi possível excluir o personagem."
+                            );
+
+                        }
+
+                    }
+                );
+
+            });
+
+
+    } catch (erro) {
+
+        console.error(
+            "Erro ao carregar personagens cadastrados:",
+            erro
+        );
+
+
+        lista.innerHTML = `
+            <div class="lista-vazia">
+
+                <i class="fa-solid fa-triangle-exclamation"></i>
+
+                <p>
+                    Não foi possível carregar os personagens.
+                </p>
+
+            </div>
+        `;
+
+    }
+
+}
+
+
+/* =========================
+   ESCAPAR HTML
+========================= */
+
+function escaparHTML(texto) {
+
+    return String(texto)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+
+}
+
+
+/* =========================
+   INICIALIZAÇÃO
+========================= */
+
+await carregarPersonagens();
+
+criarLinhaVinculo();
+
+await carregarListaPersonagens();
+
+atualizarPreview();
+
+
+    /* =========================
+       SEGURANÇA
+    ========================= */
+
+    function escaparHTML(texto) {
+
+        return String(texto || "")
+
+            .replace(/&/g, "&amp;")
+
+            .replace(/</g, "&lt;")
+
+            .replace(/>/g, "&gt;")
+
+            .replace(/"/g, "&quot;")
+
+            .replace(/'/g, "&#039;");
+
+    }
+    
+    
+    /*Função editar personagem*/
+    
+    function editarPersonagem(id) {
+        
+    personagemEditandoId = id;
+    
+
+
+console.log("FUNÇÃO EDITAR CHAMADA");
+
+    const personagem =
+        personagensCompletos.find(
+            p => p.id === id
+        );
+
+    if (!personagem) return;
+
+    personagemEditandoId = id;
+
+    inputName.value =
+        personagem.nome || "";
+
+    inputAge.value =
+        personagem.idade || "";
+
+    inputGender.value =
+        personagem.genero || "";
+
+    inputOccupation.value =
+        personagem.ocupacao || "";
+
+    inputSummary.value =
+        personagem.resumo || "";
+
+    inputPersonality.value =
+        personagem.personalidade || "";
+
+    inputBio.value =
+        personagem.historia || "";
+
+    inputCuriosities.value =
+        personagem.curiosidades || "";
+
+    inputColor.value =
+        personagem.corCard || "#3A0B17";
+
+    base64ImageComprimida =
+        personagem.imagemBase64 || "";
+        
+        if (personagem.imagemBase64) {
+
+        pvGalleryImg.src =
+            personagem.imagemBase64;
+
+        pvGalleryImg.style.display =
+            "block";
+
+        pvNoImage.style.display =
+            "none";
+
+        pvSheetImg.src =
+            personagem.imagemBase64;
+
+        pvSheetImg.style.display =
+            "block";
+
+        pvSheetNoImage.style.display =
+            "none";
+
+    }
+        relationsContainer.innerHTML = "";
+        
+            if (
+        personagem.relacoes &&
+        personagem.relacoes.length
+    ) {
+
+        personagem.relacoes.forEach(relacao => {
+
+            criarLinhaVinculo();
+
+            const ultimaLinha =
+                relationsContainer.lastElementChild;
+
+            ultimaLinha.querySelector(
+                ".rel-target"
+            ).value = relacao.alvo;
+
+            ultimaLinha.querySelector(
+                ".rel-type"
+            ).value = relacao.tipo;
+
+        });
+
+    } else {
+
+        criarLinhaVinculo();
+
+    }
+    
+        atualizarPreview();
+
+    form.scrollIntoView({
+        behavior: "smooth"
+    });
+
+    document.querySelector(".btn-save")
+        .textContent =
+        "Atualizar Personagem";
+}
+
+
+    
+
+
+    /* =========================
+       INICIAR
+    ========================= */
+
+    await carregarPersonagens();
+
+    criarLinhaVinculo();
+
+    await carregarListaPersonagens();
+
+    atualizarPreview();
+
 });

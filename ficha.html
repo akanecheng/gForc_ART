@@ -3,46 +3,88 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>GFORCART - Ficha do Personagem</title>
-  <link rel="stylesheet" href="ficha.css">
+  <title>gForce_ART - Ficha de Personagem</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Plus+Jakarta+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="ficha.css">
 </head>
 <body>
 
   <!-- Navbar -->
-  <nav class="navbar">
-    <div class="nav-container">
-      <a href="personagens.html" class="logo">
-        <div class="logo-icon"><i class="fa-solid fa-paint-brush"></i></div>
-        <span>GFORCART</span>
-      </a>
-      
-      <button class="menu-toggle" id="menuToggle" aria-label="Abrir Menu">
-        <i class="fa-solid fa-bars"></i>
-      </button>
-
-      <ul class="nav-links" id="navLinks">
-        <li><a href="#"><i class="fa-solid fa-house"></i> Início</a></li>
-        <li><a href="personagens.html" class="active"><i class="fa-solid fa-users"></i> Personagens</a></li>
-        <li><a href="#"><i class="fa-solid fa-image"></i> Desenhos</a></li>
-        <li><a href="configuracoes-personagens.html" class="btn-panel"><i class="fa-solid fa-gear"></i> Painel / Configurações</a></li>
-      </ul>
+  <header class="navbar">
+    <div class="logo">
+      <span class="logo-icon"><i class="fa-solid fa-paint-brush"></i></span>
+      <span class="logo-text">gForce_ART</span>
     </div>
-  </nav>
 
-  <!-- Conteúdo da Ficha -->
+    <button class="menu-toggle" id="menuToggle" aria-label="Abrir Menu">
+      <i class="fa-solid fa-bars"></i>
+    </button>
+
+    <!-- Menu Drawer Dropdown -->
+    <nav class="nav-drawer" id="navDrawer">
+      <ul>
+        <li>
+          <a href="index.html">
+            <i class="fa-solid fa-house"></i> Início
+          </a>
+        </li>
+        <li>
+          <a href="personagens.html" class="active">
+            <i class="fa-solid fa-users"></i> Personagens
+          </a>
+        </li>
+        <li>
+          <a href="artes.html">
+            <i class="fa-solid fa-image"></i> Desenhos
+          </a>
+        </li>
+        <li>
+          <a href="configuracoes.html" class="btn-panel">
+            <i class="fa-solid fa-gear"></i> Configurações
+          </a>
+        </li>
+      </ul>
+    </nav>
+  </header>
+
+  <!-- Conteúdo Principal / Ficha de Personagem -->
   <main class="container">
-    <a href="personagens.html" class="btn-back"><i class="fa-solid fa-arrow-left"></i> Voltar à Galeria</a>
+    <div class="back-navigation">
+      <a href="personagens.html" class="btn-back">
+        <i class="fa-solid fa-arrow-left"></i> Voltar para a galeria
+      </a>
+    </div>
 
-    <div id="characterContent" class="profile-container">
+    <section id="characterContainer" class="character-wrapper">
       <div class="loading-state">
         <i class="fa-solid fa-spinner fa-spin"></i>
-        <p>Carregando dados da ficha...</p>
+        <p>Carregando dados do personagem...</p>
       </div>
-    </div>
+    </section>
   </main>
 
+  <script>
+    const menuToggle = document.getElementById('menuToggle');
+    const navDrawer = document.getElementById('navDrawer');
+
+    if (menuToggle && navDrawer) {
+      menuToggle.addEventListener('click', (e) => {
+        e.stopPropagation();
+        navDrawer.classList.toggle('open');
+      });
+
+      document.addEventListener('click', (e) => {
+        if (!navDrawer.contains(e.target) && !menuToggle.contains(e.target)) {
+          navDrawer.classList.remove('open');
+        }
+      });
+    }
+  </script>
+
+  <!-- Script Firebase & Lógica do Personagem<--></-->
   <script type="module" src="ficha.js"></script>
 </body>
 </html>
