@@ -374,3 +374,68 @@ body {
         align-items: flex-start;
     }
 }
+
+/* RELAÇÕES */
+
+.relations-list {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+}
+
+.relation-item{
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    width: fit-content;
+    max-width: 100%;
+    padding: 10px 14px;
+    background: rgba(0,0,0,0.15);
+    border: 1px solid var(--card-border);
+    border-radius: 12px;
+
+    min-height: auto;
+}
+
+.relation-avatar{
+     width: 42px;
+    height: 42px;
+    border-radius: 50%;
+
+    overflow: hidden;
+    flex-shrink: 0;
+
+    background: var(--c-3);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.relation-info{
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.relation-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.relation-avatar i {
+    font-size: 16px;
+}
+
+
+.relation-info strong{
+    color:var(--c-7);
+    font-size: 0.95rem;
+}
+
+.relation-info span{
+    color:var(--c-6);
+    font-size:12px;
+}

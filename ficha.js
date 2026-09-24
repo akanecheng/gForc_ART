@@ -283,33 +283,33 @@ function renderizarFicha(personagem) {
             Relações
         </h2>
 
-        <div class="section-content relations-list">
+    <div class="relations-list">
 
-            ${relacoes.map(relacao => `
+          ${relacoes.map(relacao => `
 
-                <div class="relation-item">
+  <div class="relation-item">
 
-                    <i class="fa-solid fa-heart"></i>
+    <div class="relation-avatar">
+        <i class="fa-solid fa-user"></i>
+    </div>
 
-                    <div class="relation-info">
+    <div class="relation-info">
 
-                        <strong>
-                            ${relacao.alvo || "Personagem"}
-                        </strong>
+        <strong>
+            ${relacao.alvo || "Personagem"}
+        </strong>
 
-                        ${
-                            relacao.tipo
-                            ?
-                            `<span>${relacao.tipo}</span>`
-                            :
-                            ""
-                        }
+        ${
+            relacao.tipo
+            ? `<span>${relacao.tipo}</span>`
+            : ""
+        }
 
-                    </div>
+    </div>
 
-                </div>
+</div>
 
-            `).join("")}
+`).join("")}
 
         </div>
 
