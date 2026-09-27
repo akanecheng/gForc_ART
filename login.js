@@ -5,53 +5,62 @@ import {
 
 import {
     signInWithPopup
-}
-from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+} from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
+console.log("LOGIN.JS CARREGOU");
 
 const btn =
 document.getElementById("googleLogin");
 
+console.log("BOTÃO:", btn);
 
 btn.addEventListener(
     "click",
     async () => {
 
-        try{
+        console.log("BOTÃO CLICADO");
+
+        try {
+
+            console.log("VOU ABRIR LOGIN GOOGLE");
 
             const resultado =
-            await signInWithPopup(
-                auth,
-                provider
-            );
+                await signInWithPopup(
+                    auth,
+                    provider
+                );
 
             const email =
-            resultado.user.email;
+                resultado.user.email;
 
+            console.log("EMAIL:", email);
 
-            if(
+            if (
                 email ===
-                "SEUEMAIL@gmail.com"
-            ){
+                "polyanadesn02@gmail.com"
+            ) {
 
                 window.location =
-                "configuracoes.html";
+                    "configuracoes.html";
 
-            }else{
+            } else {
 
                 alert(
                     "Você não tem permissão."
                 );
 
-                await auth.signOut();
-
             }
 
-        }catch(erro){
+        } catch(erro){
 
-            console.error(erro);
+    console.log(erro);
 
-        }
+    alert(
+        erro.code + "\n" +
+        erro.message
+    );
+
+}
 
     }
 );
