@@ -1,0 +1,532 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerenciar página | gForc_ART</title>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --c1:#4B0F1E;
+            --c2:#6D1D32;
+            --c3:#8E2B44;
+            --c4:#B23C59;
+            --c5:#CC5671;
+            --c6:#E07A94;
+            --c7:#F7D6DC;
+        }
+
+        * {
+            box-sizing:border-box;
+            margin:0;
+            padding:0;
+            font-family:'Plus Jakarta Sans',sans-serif;
+        }
+
+        body {
+            background:var(--c1);
+            color:var(--c7);
+            min-height:100vh;
+        }
+
+        header {
+            position:sticky;
+            top:0;
+            z-index:10;
+            background:var(--c1);
+            border-bottom:1px solid rgba(247,214,220,.15);
+            padding:18px 6%;
+            display:flex;
+            align-items:center;
+            justify-content:space-between;
+        }
+
+        .logo {
+            font-family:'Cinzel',serif;
+            font-weight:700;
+            letter-spacing:1px;
+        }
+
+        a {
+            color:var(--c7);
+            text-decoration:none;
+            font-size:13px;
+        }
+
+        main {
+            width:100%;
+            max-width:800px;
+            margin:auto;
+            padding:30px 16px 60px;
+        }
+
+        .heading {
+            margin-bottom:25px;
+        }
+
+        h1,h2 {
+            font-family:'Cinzel',serif;
+        }
+
+        h1 {
+            font-size:24px;
+            margin-bottom:8px;
+        }
+
+        .heading p,.hint {
+            color:var(--c6);
+            font-size:12px;
+            line-height:1.6;
+        }
+
+        .panel {
+            background:var(--c2);
+            border:1px solid rgba(247,214,220,.15);
+            border-radius:18px;
+            padding:22px;
+            margin-bottom:18px;
+        }
+
+        h2 {
+            font-size:15px;
+            margin-bottom:20px;
+        }
+
+        .field {
+            margin-bottom:18px;
+        }
+
+        label {
+            display:block;
+            font-size:12px;
+            font-weight:600;
+            margin-bottom:8px;
+        }
+
+        input,textarea {
+            width:100%;
+            background:var(--c1);
+            color:var(--c7);
+            border:1px solid rgba(247,214,220,.2);
+            border-radius:10px;
+            padding:13px;
+            outline:none;
+            font-size:13px;
+        }
+
+        input:focus,textarea:focus {
+            border-color:var(--c6);
+        }
+
+        textarea {
+            resize:vertical;
+            min-height:100px;
+            line-height:1.6;
+        }
+
+        input::placeholder,textarea::placeholder {
+            color:rgba(247,214,220,.4);
+        }
+
+        .hint {
+            margin-top:6px;
+        }
+
+        .photo-area {
+            display:flex;
+            align-items:center;
+            gap:18px;
+            flex-wrap:wrap;
+        }
+
+        .photo-area img {
+            width:115px;
+            height:115px;
+            border-radius:20px;
+            object-fit:cover;
+            border:3px solid var(--c5);
+        }
+
+        .photo-actions {
+            flex:1;
+            min-width:180px;
+        }
+
+        .file-label {
+            display:inline-flex;
+            background:var(--c3);
+            border:1px solid var(--c5);
+            padding:12px 15px;
+            border-radius:10px;
+            cursor:pointer;
+            font-size:12px;
+            gap:8px;
+            align-items:center;
+        }
+
+        #avatarFile {
+            display:none;
+        }
+
+        .remove-photo {
+            display:block;
+            margin-top:10px;
+            background:none;
+            border:none;
+            color:var(--c6);
+            cursor:pointer;
+            font-size:11px;
+        }
+
+        .icon-grid {
+            display:grid;
+            grid-template-columns:repeat(4,1fr);
+            gap:9px;
+            margin-top:12px;
+        }
+
+        .icon-option {
+            background:var(--c1);
+            border:1px solid rgba(247,214,220,.15);
+            border-radius:12px;
+            color:var(--c6);
+            padding:14px 5px;
+            cursor:pointer;
+            display:flex;
+            flex-direction:column;
+            align-items:center;
+            gap:8px;
+            font-size:11px;
+        }
+
+        .icon-option i {
+            font-size:20px;
+        }
+
+        .icon-option.selected {
+            background:var(--c3);
+            color:white;
+            border:2px solid var(--c7);
+        }
+
+        .tag-preview {
+            display:inline-flex;
+            align-items:center;
+            gap:7px;
+            background:var(--c3);
+            border:1px solid var(--c5);
+            padding:8px 15px;
+            border-radius:30px;
+            margin-top:15px;
+            font-size:12px;
+        }
+
+        .preview {
+            background:var(--c1);
+            border:1px solid var(--c4);
+            padding:20px;
+            border-radius:15px;
+            text-align:center;
+        }
+
+        .preview img {
+            width:100px;
+            height:100px;
+            object-fit:cover;
+            border-radius:20px;
+            border:3px solid var(--c5);
+        }
+
+        .preview h3 {
+            font-family:'Cinzel',serif;
+            font-size:21px;
+            margin:15px 0;
+            white-space:pre-line;
+        }
+
+        .preview p {
+            font-size:12px;
+            line-height:1.6;
+            color:var(--c6);
+            white-space:pre-line;
+        }
+
+        .preview-subtitle {
+            display:inline-block;
+            border:1px solid var(--c4);
+            padding:6px 12px;
+            border-radius:20px;
+            color:var(--c6);
+            font-size:10px;
+            margin-top:12px;
+        }
+
+        .status {
+            padding:13px;
+            border-radius:10px;
+            background:var(--c2);
+            font-size:12px;
+            margin-bottom:18px;
+            line-height:1.5;
+        }
+
+        .status.error {
+            border:1px solid #e07a94;
+        }
+
+        .status.success {
+            border:1px solid #82c99b;
+        }
+
+        .actions {
+            display:flex;
+            gap:12px;
+        }
+
+        button.save {
+            flex:1;
+            background:var(--c5);
+            color:white;
+            border:0;
+            border-radius:11px;
+            padding:16px;
+            font-weight:700;
+            cursor:pointer;
+        }
+
+        button.save:disabled {
+            opacity:.5;
+            cursor:not-allowed;
+        }
+
+        button.cancel {
+            background:transparent;
+            border:1px solid var(--c5);
+            color:var(--c7);
+            border-radius:11px;
+            padding:14px;
+            cursor:pointer;
+        }
+
+        @media(max-width:480px) {
+            .panel {padding:17px;}
+            h1 {font-size:20px;}
+            .icon-grid {grid-template-columns:repeat(3,1fr);}
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <div class="logo">gForc_ART</div>
+    <a href="index.html">
+        <i class="fa-solid fa-arrow-left"></i> Voltar
+    </a>
+</header>
+
+<main>
+
+    <div class="heading">
+        <h1>Personalizar Index</h1>
+        <p>Edite sua página inicial sem precisar mexer no código.</p>
+    </div>
+
+    <div id="statusMessage" class="status">
+        Verificando acesso...
+    </div>
+
+    <form id="profileForm">
+
+        <section class="panel">
+            <h2><i class="fa-solid fa-image"></i> Foto de perfil</h2>
+
+            <div class="photo-area">
+                <img id="avatarPreview"
+                     src="https://placehold.co/300x300/4B0F1E/F7D6DC?text=Foto"
+                     alt="Foto de perfil">
+
+                <div class="photo-actions">
+                    <label class="file-label" for="avatarFile">
+                        <i class="fa-solid fa-upload"></i>
+                        Escolher foto
+                    </label>
+
+                    <input type="file"
+                           id="avatarFile"
+                           accept="image/png,image/jpeg,image/webp">
+
+                    <button type="button"
+                            class="remove-photo"
+                            id="removePhoto">
+                        Remover foto escolhida
+                    </button>
+
+                    <p class="hint">JPG, PNG ou WEBP. Máximo de 5 MB.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="panel">
+            <h2><i class="fa-solid fa-tag"></i> Tag da artista</h2>
+
+            <div class="field">
+                <label for="badgeText">Texto da tag</label>
+                <input id="badgeText" maxlength="40"
+                       placeholder="Ex: Artista">
+            </div>
+
+            <label>Escolha o ícone</label>
+
+            <div class="icon-grid" id="iconGrid">
+
+                <button type="button" class="icon-option selected" data-icon="palette">
+                    <i class="fa-solid fa-palette"></i> Paleta
+                </button>
+
+                <button type="button" class="icon-option" data-icon="heart">
+                    <i class="fa-solid fa-heart"></i> Coração
+                </button>
+
+                <button type="button" class="icon-option" data-icon="star">
+                    <i class="fa-solid fa-star"></i> Estrela
+                </button>
+
+                <button type="button" class="icon-option" data-icon="paintbrush">
+                    <i class="fa-solid fa-paintbrush"></i> Pincel
+                </button>
+
+                <button type="button" class="icon-option" data-icon="crown">
+                    <i class="fa-solid fa-crown"></i> Coroa
+                </button>
+
+                <button type="button" class="icon-option" data-icon="gem">
+                    <i class="fa-solid fa-gem"></i> Diamante
+                </button>
+
+                <button type="button" class="icon-option" data-icon="flower">
+                    <i class="fa-solid fa-leaf"></i> Natureza
+                </button>
+
+                <button type="button" class="icon-option" data-icon="wand-magic-sparkles">
+                    <i class="fa-solid fa-wand-magic-sparkles"></i> Magia
+                </button>
+
+                <button type="button" class="icon-option" data-icon="book-open">
+                    <i class="fa-solid fa-book-open"></i> Livro
+                </button>
+
+                <button type="button" class="icon-option" data-icon="pencil">
+                    <i class="fa-solid fa-pencil"></i> Lápis
+                </button>
+
+                <button type="button" class="icon-option" data-icon="feather">
+                    <i class="fa-solid fa-feather"></i> Pena
+                </button>
+
+                <button type="button" class="icon-option" data-icon="camera">
+                    <i class="fa-solid fa-camera"></i> Câmera
+                </button>
+
+            </div>
+
+            <div class="tag-preview">
+                <i id="tagIconPreview" class="fa-solid fa-palette"></i>
+                <span id="tagTextPreview">Artista</span>
+            </div>
+        </section>
+
+        <section class="panel">
+            <h2><i class="fa-solid fa-pen"></i> Textos do perfil</h2>
+
+            <div class="field">
+                <label for="subtitle">Frase do balão</label>
+                <input id="subtitle"
+                       placeholder="BEM-VINDO AO MEU UNIVERSO ARTÍSTICO">
+            </div>
+
+            <div class="field">
+                <label for="title">Título principal</label>
+                <textarea id="title"
+                          placeholder="gForc_ART"></textarea>
+            </div>
+
+            <div class="field">
+                <label for="description">Descrição</label>
+                <textarea id="description"
+                          placeholder="Sua apresentação artística..."></textarea>
+            </div>
+        </section>
+
+        <section class="panel">
+            <h2><i class="fa-solid fa-share-nodes"></i> Redes sociais</h2>
+
+            <div class="field">
+                <label>Instagram</label>
+                <input type="url" id="instagram"
+                       placeholder="https://instagram.com/...">
+            </div>
+
+            <div class="field">
+                <label>Link secundário</label>
+                <input type="url" id="secondaryLink"
+                       placeholder="https://...">
+            </div>
+
+            <div class="field">
+                <label>ArtStation</label>
+                <input type="url" id="artstation"
+                       placeholder="https://www.artstation.com/...">
+            </div>
+        </section>
+
+        <section class="panel">
+            <h2><i class="fa-solid fa-eye"></i> Prévia do Index</h2>
+
+            <div class="preview">
+                <img id="previewAvatar"
+                     src="https://placehold.co/300x300/4B0F1E/F7D6DC?text=Foto"
+                     alt="Prévia">
+
+                <div>
+                    <span class="tag-preview">
+                        <i id="previewBadgeIcon" class="fa-solid fa-palette"></i>
+                        <span id="previewBadgeText">Artista</span>
+                    </span>
+                </div>
+
+                <div class="preview-subtitle" id="previewSubtitle">
+                    BEM-VINDO AO MEU UNIVERSO ARTÍSTICO
+                </div>
+
+                <h3 id="previewTitle">gForc_ART</h3>
+
+                <p id="previewDescription">
+                    Sua apresentação artística aparecerá aqui.
+                </p>
+            </div>
+        </section>
+
+        <div class="actions">
+            <button class="save" type="submit" id="saveButton" disabled>
+                <i class="fa-solid fa-floppy-disk"></i>
+                Salvar alterações
+            </button>
+
+            <button class="cancel" type="button" id="resetButton">
+                <i class="fa-solid fa-rotate-left"></i>
+            </button>
+        </div>
+
+    </form>
+</main>
+
+<script type="module" src="perfil2.js"></script>
+
+</body>
+</html>
