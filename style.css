@@ -449,6 +449,7 @@ body {
 }
 
 /* 3. Notebooks & PCs (1024px ou mais) */
+/* 3. Notebooks & PCs (1024px ou mais) */
 @media (min-width: 1024px) {
     .navbar {
         padding: 16px 80px;
@@ -461,7 +462,7 @@ body {
     .profile-card {
         display: grid;
         grid-template-columns: 220px 1fr;
-        grid-gap: 32px;
+        gap: 32px; /* Atualizado de grid-gap para gap */
         text-align: left;
         align-items: center;
     }
@@ -480,11 +481,13 @@ body {
 
     .sub-badge {
         align-self: flex-start;
+        width: fit-content; /* Impede a pílula "Bem-vindos!" de esticar */
     }
 
     .description {
         margin-left: 0;
         margin-right: 0;
+        max-width: 100%; /* Aproveita bem a largura da coluna */
     }
 
     .social-links {
